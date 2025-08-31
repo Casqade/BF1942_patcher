@@ -36,7 +36,7 @@ though the patcher works in any folder as long as the patched executables exist 
 3. **MAKE A BACKUP of every executable you're going to patch!!!** 
 Patcher doesn't do it automatically, and you'll probably be confused by autobackup files anyway. 
 4. Launch the patcher and follow the on-screen prompts. 
-If you've never worked with command-line interface, refer to [the next section](https://github.com/Casqade/BF1942_patcher/blob/main/README.md#using-terminal)
+If you've never worked with command-line interface, please refer to [the next section](https://github.com/Casqade/BF1942_patcher/blob/main/README.md#using-terminal)
 
 For every tweak, this utility offers 3 modes of operation:
 1. `Skip`: The bytes related to a particular tweak won't be touched (e.g. tweak won't be applied or removed)
@@ -168,7 +168,7 @@ is probably a game crash upon launching or connecting to server.
 # Verifying executable
 
 The most reliable way to verify the executable is by 
-comparing either `CRC32` or `MD5` hashums with the ones from the list. 
+comparing either `CRC32` or `MD5` hashums with the ones from the list above. 
 Or, if that's too difficult, you can compare `Modified` date, 
 though it's very unreliable and non-representative.
 
