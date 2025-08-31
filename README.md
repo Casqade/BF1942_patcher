@@ -200,3 +200,12 @@ because I haven't seen any public `BF1942.exe` analyses.
 - `MakePortable`: Team SiMPLE
 
 Others I figured out myself and also adapted/ported every vanilla executable patch for `BF1942_r.exe`
+
+
+# Thoughts on implementation and future plans
+
+Unfortunately, patching the executable statically is not flexible enough to achieve most things. 
+In comparison, DLL injection allows runtime patching/hooking and adding new features without 
+any modifications to the original executable, while also being easier for the user to configure. 
+Given its benefits, maybe I'll implement this technique in another project or just fork 
+[bf42plus](https://github.com/uuuzbf/bf42plus) and migrate all my patches there + implement new ones. 
