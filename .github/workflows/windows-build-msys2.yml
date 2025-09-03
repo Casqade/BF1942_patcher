@@ -40,9 +40,15 @@ jobs:
           mingw-w64-${{ matrix.config.env }}-clang
 
 
+    - name: Set reusable strings
+      id: strings
+      run: |
+        echo "source-dir=$(cygpath -u '${{ github.workspace }}')" >> "$GITHUB_OUTPUT"
+
+
     - name: Build
       run: |
-        cd ${{ github.workspace }}
+        cd ${{ steps.strings.outputs.source-dir }}
         ${{ matrix.config.cxx }} --std=c++17 -static BF1942_patcher.cpp -o BF1942_patcher.exe
 
 
