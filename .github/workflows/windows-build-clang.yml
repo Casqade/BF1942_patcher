@@ -26,11 +26,6 @@ jobs:
             cc: "clang-cl",
             cxx: "clang-cl"
           }
-        - {
-            os: windows-latest,
-            cc: "clang",
-            cxx: "clang++"
-          }
 
     steps:
     - uses: actions/checkout@v4
@@ -39,7 +34,7 @@ jobs:
     - name: Build
       run: |
         cd ${{ github.workspace }}
-        ${{ matrix.config.cxx }} /std:c++17 /EHsc BF1942_patcher.cpp
+        clang-cl /std:c++17 /EHsc BF1942_patcher.cpp
 
 
     - name: Upload Build Artifact
