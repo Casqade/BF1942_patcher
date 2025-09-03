@@ -55,7 +55,7 @@ jobs:
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: 'BF1942_patcher.exe'
+        name: 'BF1942_patcher-${{ matrix.config.cc }}.exe'
         path: '${{ github.workspace }}\BF1942_patcher-${{ matrix.config.cc }}.exe'
         if-no-files-found: error
         compression-level: 9
