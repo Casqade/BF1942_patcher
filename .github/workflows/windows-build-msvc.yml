@@ -1,0 +1,46 @@
+name: Build (Windows MSVC)
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
+      - '.github/workflows/windows-build-clang.yml'
+      - '.github/workflows/windows-build-msys2.yml'
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-msvc:
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - {
+            os: windows-latest,
+            cc: "cl",
+            cxx: "cl"
+          }
+
+    steps:
+    - uses: actions/checkout@v4
+
+
+    - name: Build
+      run: |
+        cd ${{ github.workspace }}
+        cl /std:c++17 /EHsc BF1942_patcher.cpp
+
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: 'BF1942_patcher.exe'
+        path: '${{ github.workspace }}\BF1942_patcher.exe'
+        if-no-files-found: error
+        compression-level: 9
