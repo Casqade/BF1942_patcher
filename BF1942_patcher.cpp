@@ -1659,6 +1659,11 @@ main(
   int,
   char** )
 {
+  std::cout <<
+    "BF1942_patcher by casqade\n"
+    "  source: https://github.com/Casqade/BF1942_patcher\n\n";
+
+
   while ( true )
   {
     std::cout << "Select operation (1/2/3):" << "\n"
