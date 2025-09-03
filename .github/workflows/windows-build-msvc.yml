@@ -30,15 +30,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup MSVC environment
-      shell: cmd
-      run: |
-        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
-
 
     - name: Build
+      shell: cmd
       run: |
         cd ${{ github.workspace }}
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
         cl /std:c++17 /EHsc BF1942_patcher.cpp
 
 
