@@ -49,13 +49,13 @@ jobs:
     - name: Build
       run: |
         cd ${{ steps.strings.outputs.source-dir }}
-        ${{ matrix.config.cxx }} --std=c++17 -static BF1942_patcher.cpp -o BF1942_patcher.exe
+        ${{ matrix.config.cxx }} --std=c++17 -static BF1942_patcher.cpp -o BF1942_patcher-${{ matrix.config.cc }}.exe
 
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
         name: 'BF1942_patcher.exe'
-        path: '${{ github.workspace }}\BF1942_patcher.exe'
+        path: '${{ github.workspace }}\BF1942_patcher-${{ matrix.config.cc }}.exe'
         if-no-files-found: error
         compression-level: 9
