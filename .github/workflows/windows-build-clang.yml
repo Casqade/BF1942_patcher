@@ -40,7 +40,7 @@ jobs:
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: 'BF1942_patcher.exe'
+        name: 'BF1942_patcher-clang-cl'
         path: '${{ github.workspace }}\BF1942_patcher.exe'
         if-no-files-found: error
         compression-level: 9
