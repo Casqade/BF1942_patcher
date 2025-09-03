@@ -21,7 +21,6 @@ and can also generate `BlackScreen_r.exe` which should reduce crashes when using
 - `CustomWindowTitle`: Sets custom game window title, in case you want to embed some information about the patches
 - `MaxBotCount`: Increases maximum bot count
 - `InternetGamesSupport`:  Enables internet games support for **debug executable**, allowing manual IP:port connection when server browser fails to find a LAN game. Note that `BF1942_r.exe` is incompatible with regular executables/servers, so this patch simply allows to connect by IP without having to launch the game with cmd arguments like `+joinServer` and `+isInternet`
-- `RemoveSleeps`: *EXPERIMENTAL*, may fail to work! Removes 1-2 second sleeps after spawning new game process. May reduce delays when changing map or disconnecting from server
 - `MakePortable`: Makes the game portable. Virtually every patched `BF1942.exe` on the Internet has this applied (Team SiMPLE, Henk and others)
 
 
@@ -203,6 +202,10 @@ Others I figured out myself and also adapted/ported every vanilla executable pat
 
 
 # Thoughts on implementation and future plans
+
+I tried to comment every byte sequence modification in the code, 
+but bear in mind that all referenced function & class names shouldn't 
+be relied upon since these're just my guesses deduced by analysing debug executable. 
 
 Unfortunately, patching the executable statically is not flexible enough to achieve most things. 
 In comparison, DLL injection allows runtime patching/hooking and adding new features without 
