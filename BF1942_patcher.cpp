@@ -1110,6 +1110,40 @@ public:
 };
 
 
+class FixMemoryPoolLeaks : public Patch
+{
+  const char* description() const override
+  {
+    return
+      "--------------------------\n"
+      "--- FixMemoryPoolLeaks ---\n"
+      "--------------------------\n"
+      "Fixes memory leaks in pool allocators";
+  }
+
+
+public:
+
+  void promptUser( ExecutableType exeType ) override
+  {
+    PromptOperationMode();
+  }
+
+  void patch( std::fstream& file, ExecutableType exeType ) const override
+  {
+//    skip redundant malloc() call
+    ApplyPatch(
+      file, mOperationMode, exeType,
+      0x20170F,
+        { 0xB9, 0x30 },
+        { 0xEB, 0x11 },
+      0x29217C,
+        { 0x6A, 0x30 },
+        { 0xEB, 0x09 } );
+  }
+};
+
+
 class MakePortable : public Patch
 {
 //  identical to hashsum at BF1942_w32ded.exe:2E4F3C
@@ -1728,6 +1762,7 @@ main(
     new Patches::CustomWindowTitle(),
     new Patches::MaxBotCount(),
     new Patches::InternetGamesSupport(),
+    new Patches::FixMemoryPoolLeaks(),
     new Patches::MakePortable(),
   };
 
