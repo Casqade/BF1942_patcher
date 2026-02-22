@@ -1370,9 +1370,10 @@ public:
         0x95063, 0xEB808,
         ToBytes(mExeCrc) );
 
-      ApplyPatch(
-        file, 0x950BA,
-        ToBytes(mExeCrc) );
+      if ( exeType == ExecutableType::Main )
+        ApplyPatch(
+          file, 0x950BA,
+          ToBytes(mExeCrc) );
 
 //      Not present in executable(s) from SiMPLE
       if ( false )
