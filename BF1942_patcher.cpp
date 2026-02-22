@@ -5,7 +5,7 @@
 ///
 /// Building:
 ///
-/// cl /std:c++17 /EHsc BF1942_patcher.cpp && rm BF1942_patcher.obj
+/// cl /std:c++17 /EHsc BF1942_patcher.cpp && del BF1942_patcher.obj
 ///
 /// g++ --std=c++17 -static BF1942_patcher.cpp -o BF1942_patcher.exe
 ///
