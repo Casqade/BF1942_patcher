@@ -1,5 +1,10 @@
 # BF1942_patcher
 
+[![Windows (MSVC)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-msvc.yml/badge.svg)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-msvc.yml)
+[![Windows (Clang)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-clang.yml/badge.svg)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-clang.yml)
+[![Windows (MSYS2)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-msys2.yml/badge.svg)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-msys2.yml)
+[![GitHub Releases](https://img.shields.io/github/release/Casqade/BF1942_patcher.svg)](https://github.com/Casqade/BF1942_patcher/releases/latest)
+
 For some reason, no one published any patches for Battlefield 1942's debug executable `BF1942_r.exe`, 
 so I collected all the tweaks found in patched main `BF1942.exe` executables scattered across the web and 
 adapted them for `BF1942_r.exe`. 
