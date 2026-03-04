@@ -150,7 +150,7 @@ std::vector <uint8_t>
 ToBytes(
   const std::string& text )
 {
-  std::vector <uint8_t> bytes(text.size() + 1);
+  std::vector <uint8_t> bytes(text.size());
 
   std::memcpy(
     bytes.data(),
