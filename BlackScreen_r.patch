@@ -1,0 +1,16 @@
+// Before using this patch,
+// create a copy of BlackScreen.exe
+// and name it BlackScreen_r.exe
+
+BlackScreen_r.exe 6144
+
+
+DebugExecutableCompatibility
+# Makes BlackScreen.exe compatible with BF1942_r.exe.
+{
+  string 15
+    #
+      0xF88
+        # BF1942.exe %s
+        # BF1942_r.exe %s
+}

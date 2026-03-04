@@ -1,0 +1,446 @@
+BF1942.exe 5648384
+
+
+Handle4GBAddressSpace
+# This tweak allows the game to access more memory (4 GB).
+{
+  flags
+    0x14e
+      0x20 // IMAGE_FILE_LARGE_ADDRESS_AWARE
+}
+
+
+DefaultWindowPosition
+# When the game is launched in windowed mode,
+# the window is positioned at screen offset [50, 50].
+# This tweak allows to change this offset.
+{
+  number int8
+    # window X offset
+      0x2325bd
+        50
+        50
+
+  number int8
+    # window Y offset
+      0x2325bb
+        50
+        50
+}
+
+
+ForceMaximizedWindow
+# This tweak makes game window maximized by default.
+{
+//  patch dwStyle for CreateWindow()
+  binary
+    0x2325c2
+      00 // ~WS_MAXIMIZE
+      01 // WS_MAXIMIZE
+
+//  in case CreateWindow() ignores WS_MAXIMIZE style,
+//  let's patch nCmdShow flags for ShowWindow() as well
+  binary
+    0x23260b
+      05 // SW_SHOW
+      03 // SW_SHOWMAXIMIZED
+}
+
+
+DefaultWindowResolution
+# This tweak sets default game window resolution to a custom value.
+# Technically, it should prevent the game from messing up your
+# monitor/desktop settings when launching in fullscreen mode.
+{
+  message
+    # Valid resolution range: 640 x 480 up to 32768 x 32768
+    # (upper one is OS limit, don't expect the game to tolerate that)
+    #
+
+  number int32 min 640 max 32768
+    # window width
+      0x631ef, 0x240940, 0x2af66b, 0x2b0281, 0x2b0299, 0x2b1143, 0x2b13f7, 0x2b184b
+        800
+        800
+
+  number int32 min 480 max 32768
+    # window height
+      0x631f7, 0x240947, 0x2af673, 0x2b0288, 0x2b02a0, 0x2b114a, 0x2b13ff, 0x2b1853
+        600
+        600
+}
+
+
+DontSetDefaultVideoMode
+# This tweak prevents setting default video mode
+# in favour of loading it from user profile config files.
+{
+  binary
+    0x5dd6a
+      D2 33
+      02 34
+}
+
+
+FixAspectRatio
+# This tweak fixes aspect ratio for widescreens.
+{
+//  dice.ref2.rend.RenderView.Standard member
+//  Camera aspect ratio?
+  binary
+    0x1b7d22
+      7B
+      EB
+
+//  Options/Video/LoadVideoOptions
+  binary
+    0x2b0909
+      0F 8A B9 00 00 00
+      90 90 90 90 90 90
+}
+
+
+InhibitAddToBuddyListFailedMessage
+# This tweak removes console output for error
+# 'failed to add player to buddylist. Couldn't locate player'.
+{
+  binary
+    0x6a410
+      E8 EB D8 23 00
+      83 C4 1C 90 90
+}
+
+
+CustomMasterServer
+# This tweak sets custom master server.
+{
+//  There's enough space to fit up to 63 characters, but
+//  it's safer to avoid exceeding default master server length
+  string 18 url
+    # master server url
+      0x557c30, 0x557DF8
+        # master.gamespy.com
+//
+        # master.gamespy.com
+//      master.bf1942.org
+}
+
+
+CustomWindowTitle
+# This tweak sets custom game window title.
+{
+  string 39
+    # window title
+      0x4d417c
+        # BF1942 (Ver: Tue, 19 Oct 2004 14:58:45)
+//
+        # BF1942 (Ver: Tue, 19 Oct 2004 14:58:45)
+}
+
+
+MaxBotCount
+# This tweak increases maximum bot count.
+{
+//  game.serverMaxPlayers ?
+  number uint8 min 64 max 255
+    # max bot count
+      0x2195F, 0x2196A, 0x5857, 0x585F
+        64
+        64
+
+  binary
+    0x21967
+      7E
+      76
+
+  binary
+    0x585C
+      7E
+      76
+}
+
+
+FixMemoryPoolLeaks
+# Fixes memory leaks in pool allocators
+{
+//  skip redundant malloc() call
+  binary
+    0x20170F
+      B9 30
+      EB 0B
+}
+
+
+RemoveSleeps
+# This tweak removes 1-2 second sleeps after spawning new game process.
+# May reduce delays when changing map or disconnecting from server.
+# EXPERIMENTAL, use at your own risk!
+{
+//  Sleep(2000) -> Sleep(0)
+  binary
+    0x55138
+      D0 07
+      00 00
+
+//  Sleep(1000) -> Sleep(0)
+  binary
+    0x55300
+      E8 03
+      00 00
+}
+
+
+UnlockConsoleCommands
+# Unlocks privileged console commands
+{
+//  OldConsole::autoCompletion
+  binary
+    0x1A066E
+      75
+      EB
+
+//  OldConsole::handleCommand
+  binary
+    0x19F228
+      75
+      EB
+
+//  OldConsole::handleCommand
+  binary
+    0x19F1ED
+      74
+      EB
+}
+
+
+TweakHitboxUpdateFrequency
+# This tweak changes hitbox update frequency
+{
+//  this forces update each frame,
+//  it's better to do it less frequent
+  -binary
+    0xFD47E
+      0F 8A 4E 01 00 00
+      90 90 90 90 90 90
+
+//  this will set next update to:
+//  0 / 30.0 + 0.5 = 0.5 seconds
+  binary
+    0xFD49C
+      F7 F9
+//      xor edx, edx
+      31 D2
+
+//  this will set 0.5 seconds from
+//  previous patch to custom value
+  number float min 0.0
+    # update period (in seconds)
+      0x4EA528
+        0.5
+        0.5
+//        00 00 00 3F // 0.5
+//        CD CC CC 3D // 0.1
+}
+
+
+AcceptAnyArchiveHeaderId
+# This tweaks allows the game to accept any .rfa header id
+{
+  binary
+    0x23B039
+      74
+      EB
+}
+
+
+MakePortable
+# This tweak makes the game portable, i.e.:
+#   - no CD and/or CD drive is required
+#   - no need for CD-key in the registry (you'll probably need it to play on public servers though)
+#   - DLL checksum verification is removed (you'll be able to use SiMPLE's 4 KB Mod.dll)
+#   - executable CRC check is replaced with a constant hashum so that
+#     both ingame & SiMPLE's patched dedicated servers will accept any client executable)
+{
+//  ignore bf1942 CD-key check for local player
+  binary
+    0xcd5e
+      75
+      EB
+
+//  skip optical drive enumeration
+  binary
+    0x4d41d
+      E8 EE FE FF FF
+      B8 01 00 00 00
+
+//  Host/Create/HostInternetGame
+//  Host/Internet/HostLanGame
+//  Skirmish/StartSkirmish
+//  Join/Internet/EnterAction
+//  Join/Internet/JoinInternetGame
+//  Join/Lan/JoinLanGame
+//  CustomGame/ActivateCustomGame
+//    skip optical drive enumeration
+//      for CD:\\setup.ini: Startup/ProductGUID check
+  binary
+    0x4ddc9
+      E8 42 F5 FF FF
+      B8 01 00 00 00
+
+//  Join/Internet/EnterAction
+//  Join/Internet/JoinInternetGame
+//  Join/Lan/JoinLanGame
+//  CustomGame/ActivateCustomGame
+//    skip optical drive enumeration
+//      for CD:\\bfdist.vlu check
+  binary
+    0x4deff
+      E8 0C F4 FF FF
+      B8 01 00 00 00
+
+//  ignore invalid DLL checksum
+  binary
+    0x58364
+      0F 85
+      90 E9
+
+//  pretend SWoWWII CD-key is present in the registry
+  binary
+    0x59eed
+      75
+      EB
+
+//  insert CD
+  binary
+    0x5bdbe
+      74
+      EB
+
+//  check connection to master server?
+  binary
+    0x7f8e5
+      E8 76 FB FF FF
+      B8 00 00 00 00
+
+
+//  GameServer::StartServer
+//    use server-approved value for executable CRC32
+  binary
+    0x8765F
+      8D 4C 24 0C E8 18 9C 13 00
+
+//      SiMPLE:
+//      mov ecx, DefaultExeCRC; mov dword ptr [edx], ecx; pop eax; pop eax
+      B9 64 AC 4A A1 89 0A 58 58
+
+//      v1612:
+//      xor ecx, ecx; inc ecx; mov dword ptr [edx], ecx; pop eax; pop eax
+//      31 C9 41 89 0A 58 58 90 90
+
+
+//  GameClient::AssembleChallengeResponse
+//    use server-approved value for executable CRC32
+  binary
+    0x95062
+      8D 8C 24 70 02 00 00 E8 12 C2 12 00
+//      SiMPLE:
+//      mov ecx, DefaultExeCRC; mov dword ptr [edx], ecx; add esp, 8; xor eax, eax
+      B9 64 AC 4A A1 89 0A 83 C4 08 31 C0
+
+//      v1.612:
+//      xor ecx, ecx; inc ecx; mov dword ptr [edx], ecx; add esp, 8; xor eax, eax
+//      31 C9 41 89 0A 83 C4 08 31 C0 90 90
+
+
+//  GameClient::AssembleChallengeResponse
+//    use server-approved value for executable CRC32 (v1162 & SiMPLE WWII anthology)
+  -binary // Not present in executable(s) from SiMPLE, seen it in v1.612 only
+    0x950B9
+      8B 94 24 65 04 00 00
+//      mov edx, DefaultExeCRC
+      BA 64 AC 4A A1 90 90
+
+
+//  User-defined exe CRC. Probably not really necessary.
+//  Don't apply it if 0x8765F & 0x95062
+//  are not applied as well (also 0x950B9 if enabled)
+  -number uint32
+    # custom executable CRC
+      0x87660, 0x95063 // , 0x950BA // the last one for disabled 0x950B9 patch above
+        0xA14AAC64 // identical to hashsum at BF1942_w32ded.exe:2E4F3C
+        0xA14AAC64
+
+
+//  GameClient::AssembleChallengeResponse
+//    pretend bf1942 CD-key is present in the registry
+  binary
+    0x9510A
+      75
+      EB
+
+
+//  Join/Internet/JoinInternetGame
+//    ignore CD:\\setup.ini: Startup/ProductGUID check
+  binary
+    0x29FA9C
+      75
+      EB
+
+
+//  Join/Internet/JoinInternetGame
+//    ignore CD:\\bfdist.vlu check
+  binary
+    0x29FACD
+      75
+      EB
+
+
+//  Join/Lan/JoinLanGame
+//    ignore CD:\\setup.ini: Startup/ProductGUID check
+  binary
+    0x2A4DD5
+      75
+      EB
+
+
+//  Join/Lan/JoinLanGame
+//    ignore CD:\\bfdist.vlu check
+  binary
+    0x2A4E06
+      75
+      EB
+
+
+//  hostServer
+//  CreateGameMenu::HostLanGame
+//  CreateGameMenu::HostInternetGame
+//    ignore CD:\\setup.ini: Startup/ProductGUID check
+  binary
+    0x2C0DD2
+      0F 85
+      90 E9
+
+
+//  Skirmish/StartSkirmish
+//    ignore CD:\\setup.ini: Startup/ProductGUID check
+  binary
+    0x2DCFCF
+      75
+      EB
+
+
+//  CustomGame/ActivateCustomGame (dedicated server)
+//    ignore CD:\\setup.ini: Startup/ProductGUID check
+  binary
+    0x2E832A
+      14
+      00
+
+
+//  CustomGame/ActivateCustomGame (dedicated server)
+//    check CD:\\bfdist.vlu
+  binary
+    0x2E833D
+      75
+      EB
+}

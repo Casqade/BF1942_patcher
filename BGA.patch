@@ -1,0 +1,22 @@
+BGA.exe 8884224
+
+
+InhibitLogFile
+# Inhibits log file creation
+{
+//  LoggingSystem::StartLog: 0x2FEBE4
+  binary
+    0x2FEE13
+      E8 E0
+      EB 04
+}
+
+InhibitLogOutput
+# Inhibits log output
+{
+//  LoggingSystem::Log: 0x2FFCDC
+  -binary
+    0x300267
+      0F 83
+      90 E9
+}
