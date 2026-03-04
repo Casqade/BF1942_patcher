@@ -1110,6 +1110,54 @@ public:
 };
 
 
+class UnlockConsoleCommands : public Patch
+{
+  const char* description() const override
+  {
+    return
+      "-----------------------------\n"
+      "--- UnlockConsoleCommands ---\n"
+      "-----------------------------\n"
+      "Unlocks privileged console commands";
+  }
+
+
+public:
+
+  void promptUser( ExecutableType exeType ) override
+  {
+    PromptOperationMode();
+  }
+
+  void patch( std::fstream& file, ExecutableType exeType ) const override
+  {
+//    OldConsole::autoCompletion
+    ApplyPatch(
+      file, mOperationMode, exeType,
+      0x1A066E, 0x2277D0,
+      { 0x75 },
+      { 0xEB } );
+
+//    OldConsole::handleCommand
+    ApplyPatch(
+      file, mOperationMode, exeType,
+      0x19F228, 0x2267FF,
+      { 0x75 },
+      { 0xEB } );
+
+    if ( exeType != ExecutableType::Main )
+      return;
+
+//    OldConsole::handleCommand
+    ApplyPatch(
+      file, mOperationMode,
+      0x19F1ED,
+      { 0x74 },
+      { 0xEB } );
+  }
+};
+
+
 class FixMemoryPoolLeaks : public Patch
 {
   const char* description() const override
@@ -1748,9 +1796,7 @@ main(
   }
 
 
-  using Patches::Patch;
-
-  Patch* patches[] =
+  Patches::Patch* patches[] =
   {
     new Patches::Handle4GBAddressSpace(),
     new Patches::DefaultWindowPosition(),
@@ -1764,6 +1810,7 @@ main(
     new Patches::MaxBotCount(),
     new Patches::InternetGamesSupport(),
     new Patches::FixMemoryPoolLeaks(),
+    new Patches::UnlockConsoleCommands(),
     new Patches::MakePortable(),
   };
 
