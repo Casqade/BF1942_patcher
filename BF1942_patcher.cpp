@@ -1110,6 +1110,46 @@ public:
 };
 
 
+class RemoveSleeps : public Patch
+{
+  const char* description() const override
+  {
+    return
+      "--------------------\n"
+      "--- RemoveSleeps ---\n"
+      "--------------------\n"
+      "This tweak removes 1-2 second sleeps after spawning new game process.\n"
+      "May reduce delays when changing map or disconnecting from server.\n"
+      "EXPERIMENTAL, use at your own risk!";
+  }
+
+
+public:
+
+  void promptUser( ExecutableType exeType ) override
+  {
+    PromptOperationMode();
+  }
+
+  void patch( std::fstream& file, ExecutableType exeType ) const override
+  {
+//    Sleep(2000) -> Sleep(0)
+    ApplyPatch(
+      file, mOperationMode, exeType,
+      0x55138, 0x8CE7D,
+      { 0xD0, 0x07 },
+      { 0x00, 0x00 } );
+
+//    Sleep(1000) -> Sleep(0)
+    ApplyPatch(
+      file, mOperationMode, exeType,
+      0x55300, 0x8D028,
+      { 0xE8, 0x03 },
+      { 0x00, 0x00 } );
+  }
+};
+
+
 class UnlockConsoleCommands : public Patch
 {
   const char* description() const override
@@ -1810,6 +1850,7 @@ main(
     new Patches::MaxBotCount(),
     new Patches::InternetGamesSupport(),
     new Patches::FixMemoryPoolLeaks(),
+    new Patches::RemoveSleeps(),
     new Patches::UnlockConsoleCommands(),
     new Patches::MakePortable(),
   };
