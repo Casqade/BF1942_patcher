@@ -359,7 +359,7 @@ MakePortable
 //    use server-approved value for executable CRC32 (v1162 & SiMPLE WWII anthology)
   -binary // Not present in executable(s) from SiMPLE, seen it in v1.612 only
     0xEB854
-      31 8D E5 F5 FF FF
+      31 8D E1 F5 FF FF
 //      mov edx, DefaultExeCRC
       ?? ?? ?? ?? ?? ??
 
