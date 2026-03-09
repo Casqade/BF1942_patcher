@@ -361,7 +361,7 @@ MakePortable
     0xEB854
       31 8D E1 F5 FF FF
 //      mov edx, DefaultExeCRC
-      ?? ?? ?? ?? ?? ??
+      31 8D E1 F5 FF FF // todo: devise a patch
 
 
 //  User-defined exe CRC. Probably not really necessary.
