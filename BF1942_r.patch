@@ -224,7 +224,13 @@ UnlockConsoleCommands
       75
       EB
 
-//  OldConsole::handleCommand
+//  OldConsole::handleCommand bypass ConsoleObject active check
+  binary
+    0x2267CD
+      75
+      EB
+
+//  OldConsole::handleCommand bypass access check
   binary
     0x2267ff
       75
