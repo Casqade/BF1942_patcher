@@ -1,19 +1,25 @@
 # BF1942_patcher
 
-[![Windows (MSVC)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-msvc.yml/badge.svg)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-msvc.yml)
-[![Windows (Clang)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-clang.yml/badge.svg)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-clang.yml)
-[![Windows (MSYS2)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-msys2.yml/badge.svg)](https://github.com/Casqade/BF1942_patcher/actions/workflows/windows-build-msys2.yml)
 [![GitHub Releases](https://img.shields.io/github/release/Casqade/BF1942_patcher.svg)](https://github.com/Casqade/BF1942_patcher/releases/latest)
 
-For some reason, no one published any patches for Battlefield 1942's debug executable `BF1942_r.exe`, 
-so I collected all the tweaks found in patched main `BF1942.exe` executables scattered across the web and 
-adapted them for `BF1942_r.exe`. 
+---
 
-This program allows to apply and/or disable these (+some of my own) tweaks for both executables, 
-and can also generate `BlackScreen_r.exe` which should reduce crashes when using `BF1942_r.exe`. 
+**NOTE:** The original tool [BF1942_patcher](https://github.com/Casqade/BF1942_patcher/tree/main) 
+is now superseded by [BinaryPatcher](https://github.com/Casqade/BinaryPatcher), 
+this repository is a collection of my .patch files for BF1942-related stuff. 
+The README, however, is mostly unchanged. 
+
+---
+
+For some reason, no one published any patches for Battlefield 1942's debug executable `BF1942_r.exe`, 
+so I collected all the tweaks found in patched `BF1942.exe` executables scattered across the web and 
+adapted them for `BF1942_r.exe`. 
 
 
 # Tweaks
+
+This section is out of date, please browse 
+.patch files in the repository to find relevant patch descriptions. 
 
 - `Handle4GBAddressSpace`: Allows the game to access more memory (4 GB)
 - `DefaultWindowPosition`: Allows to change default window position when running in windowed mode
@@ -32,15 +38,20 @@ and can also generate `BlackScreen_r.exe` which should reduce crashes when using
 # How to use
 
 0. [Verify](https://github.com/Casqade/BF1942_patcher/blob/main/README.md#supported-executables) that your game executables are supported by the patcher
-1. Download latest [BF1942_patcher.exe](https://github.com/Casqade/BF1942_patcher/releases/latest)
-2. Place `BF1942_patcher.exe` in the same directory 
+1. Download [BinaryP4tcher.exe](https://github.com/Casqade/BinaryPatcher/releases/latest)
+2. Download the .patch files you need (e.g. [BF1942.patch](https://github.com/Casqade/BF1942_patcher/blob/patch-library/BF1942.patch))
+3. Place `BinaryP4tcher.exe` and the patch files in the same directory 
 as the executables you want to patch (`BF1942.exe`, `BF1942_r.exe` or `BlackScreen.exe`). 
 The convenient way is just to drop it into the game root directory, 
 though the patcher works in any folder as long as the patched executables exist in the same directory.
-3. **MAKE A BACKUP of every executable you're going to patch!!!** 
+4. **MAKE A BACKUP of every executable you're going to patch!!!** 
 Patcher doesn't do it automatically, and you'll probably be confused by autobackup files anyway. 
-4. Launch the patcher and follow the on-screen prompts. 
-If you've never worked with command-line interface, please refer to [the next section](https://github.com/Casqade/BF1942_patcher/blob/main/README.md#using-terminal)
+5. Launch the patcher and follow the on-screen prompts. 
+If you've never worked with command-line interface, please refer to [the next section](https://github.com/Casqade/BF1942_patcher/blob/patch-library/README.md#using-terminal)
+
+For easier usage, BinaryPatcher can be associated 
+with .patch files, besides it also supports 
+drag-n-drop of .patch files onto itself. 
 
 For every tweak, this utility offers 3 modes of operation:
 1. `Skip`: The bytes related to a particular tweak won't be touched (e.g. tweak won't be applied or removed)
@@ -84,8 +95,8 @@ and I don't want to restrict the patcher to a small subset of executable version
 Moreover, some players patch the game themselves (e.g. update master server), 
 so a simple hashum check won't be sufficient. Right now, only executable size is verified automatically. 
 
-This patcher works best with an original/vanilla executables found in retail editions or published by EA, 
-however it's possible to use it on other executable versions as well:
+These patches work best with original/vanilla executables found in retail editions or published by EA, 
+however it's possible to use them on other executable versions as well:
 
 ```
 BF1942.exe variants:
@@ -163,7 +174,7 @@ BlackScreen.exe:
 
 If you know the exact executable from the list you're using, but you 
 patched some strings (like master server or window title) or 
-bytes (bot count, 4gb patch) yourself, the patcher should still work OK. 
+bytes (bot count, 4gb patch) yourself, the patches should still work OK. 
 
 In any case, the worst thing that can happen if you patch the wrong executable 
 is probably a game crash upon launching or connecting to server. 
@@ -208,12 +219,14 @@ Others I figured out myself and also adapted/ported every vanilla executable pat
 
 # Thoughts on implementation and future plans
 
-I tried to comment every byte sequence modification in the code, 
+I tried to comment every byte sequence modification, 
 but bear in mind that all referenced function & class names shouldn't 
 be relied upon since these're just my guesses deduced by analysing debug executable. 
 
 Unfortunately, patching the executable statically is not flexible enough to achieve most things. 
 In comparison, DLL injection allows runtime patching/hooking and adding new features without 
 any modifications to the original executable, while also being easier for the user to configure. 
-Given its benefits, maybe I'll implement this technique in another project or just fork 
-[bf42plus](https://github.com/uuuzbf/bf42plus) and migrate all my patches there + implement new ones. 
+There's my fork of bf42plus called 
+[bf42++](https://github.com/Casqade/bf42plusplus), 
+which implements this technique, and I plan 
+to migrate all my patches there & implement new ones. 
