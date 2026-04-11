@@ -12,5 +12,6 @@ DebugExecutableCompatibility
     #
       0xF88
         # BF1942.exe %s
+//
         # BF1942_r.exe %s
 }
