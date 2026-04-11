@@ -37,7 +37,7 @@ This section is out of date, please browse
 
 # How to use
 
-0. [Verify](https://github.com/Casqade/BF1942_patcher/blob/main/README.md#supported-executables) that your game executables are supported by the patcher
+0. [Verify](https://github.com/Casqade/BF1942_patcher/blob/patch-library/README.md#supported-executables) that your game executables are supported by the patcher
 1. Download [BinaryP4tcher.exe](https://github.com/Casqade/BinaryPatcher/releases/latest)
 2. Download the .patch files you need (e.g. [BF1942.patch](https://github.com/Casqade/BF1942_patcher/blob/patch-library/BF1942.patch))
 3. Place `BinaryP4tcher.exe` and the patch files in the same directory 
